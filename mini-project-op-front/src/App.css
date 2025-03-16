@@ -1,38 +1,115 @@
-.App {
+@font-face {
+  font-family: 'Franie-ExtraBold';
+  src: url('./assets/fonts/FranieVariableTest-ExtraBold.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Franie-Light';
+  src: url('./assets/fonts/FranieVariableTest-Light.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Franie-Regular';
+  src: url('./assets/fonts/FranieVariableTest-Regular.otf') format('opentype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Franie-ExtraLight';
+  src: url('./assets/fonts/FranieVariableTest-ExtraLight.otf') format('opentype');
+  font-style: normal;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+.wrapper {
+  background-color: #000;
+  color: #fff;
+  box-sizing: border-box;
+  width: 100%;
+}
+section {
+  
+  height: 100vh;
+  width: 100%;
+}
+.hero {
+  padding-left: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-text {
+  width: 50%;
+}
+
+.hero-title {
+  font-family: 'Franie-ExtraLight';
+  letter-spacing: 0.2rem;
+  font-weight: 1;
+  font-size: 5rem;
+  margin: 0;
+}
+
+.hero-description {
+  font-family: 'Franie-Regular';
+  letter-spacing: 0.05rem;
+  font-size: 1.2rem;
+}
+
+.action-button {
+  width: fit-content;
+  box-sizing: border-box;
+  font-family: 'Franie-Regular';
+  font-size: 1.3rem;
+  padding: 20px 40px;
+  background-color: #C92717;
+  color: #000;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+  border-radius: 20px;
+}
+
+.action-button:hover {
+  transition: 0.3s;
+  background-color: #64130C;
+}
+.guide {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.section-title {
+  font-family: 'Franie-ExtraBold';
+  font-size: 3rem;
+  margin: 50px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.section-subtitle {
+  font-family: 'Franie-Light';
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  font-size: 1.2rem;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.video {
+  width: 50%;
+  aspect-ratio: 16/9;
+}
+.contacts {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+footer {
+  background-color: #64130C;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  align-items: center;
 }
