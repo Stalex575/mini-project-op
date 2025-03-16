@@ -1,4 +1,26 @@
+import { useState, useEffect } from "react";
 export default function Landing() {
+  const [showTopBtn, setShowTopBtn] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > window.innerHeight) {
+        setShowTopBtn(true);
+      } else {
+        setShowTopBtn(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     <div className="wrapper">
       <section className="hero">
@@ -38,6 +60,13 @@ export default function Landing() {
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, harum?
         </p>
       </footer>
+      <button
+        className={`scroll-to-top ${showTopBtn ? "visible" : ""}`}
+        onClick={scrollToTop}
+        aria-label="Scroll to top"
+      >
+        ↑
+      </button>
     </div>
   );
 }

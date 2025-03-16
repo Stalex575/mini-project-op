@@ -21,24 +21,29 @@
   src: url('./assets/fonts/FranieVariableTest-ExtraLight.otf') format('opentype');
   font-style: normal;
 }
+
 * {
   box-sizing: border-box;
 }
+
 body {
   width: 100vw;
   overflow-x: hidden;
 }
+
 .wrapper {
   background-color: #000;
   color: #fff;
   box-sizing: border-box;
   width: 100%;
 }
+
 section {
   
   height: 100vh;
   width: 100%;
 }
+
 .hero {
   padding-left: 160px;
   display: flex;
@@ -82,29 +87,35 @@ section {
   transition: 0.3s;
   background-color: #64130C;
 }
+
 .guide {
   text-align: center;
 }
+
 .section-title {
   font-family: 'Franie-ExtraBold';
   font-size: 3rem;
   margin: 50px;
 }
+
 .section-subtitle {
   font-family: 'Franie-Light';
   font-weight: bold;
   letter-spacing: 0.1rem;
   font-size: 1.2rem;
 }
+
 .video {
   width: 50%;
   aspect-ratio: 16/9;
 }
+
 .contacts {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 footer {
   background-color: #64130C;
   height: 150px;
@@ -112,4 +123,36 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 80px;
+  right: 80px;
+  width: 50px;
+  height: 50px;
+  background-color: #C92717;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  transform: translateY(20px);
+  z-index: 1000;
+}
+
+.scroll-to-top.visible {
+  opacity: 0.9;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  background-color: #64130C;
 }
