@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 export default function Landing() {
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,7 +33,9 @@ export default function Landing() {
             to suit any circumstances. For your convenience.
           </p>
         </div>
-        <button className="action-button">To map</button>
+        <button className="action-button" onClick={() => navigate("/map")}>
+          To map
+        </button>
       </section>
       <section className="guide">
         <h1 className="section-title">How to use it?</h1>
