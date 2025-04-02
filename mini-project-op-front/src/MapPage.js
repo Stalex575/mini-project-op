@@ -11,18 +11,19 @@ export default function MapPage() {
   const [error, setError] = useState("");
 
   const handleSelectLocations = (locations) => {
-    // if (locations.length === 2) {
-    //   fetch("/compute_route", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({ start: locations[0], end: locations[1] }),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       setRoute(data.path);
-    //       setObstacleMode(true);
-    //     });
-    // }
+    if (locations.length === 2) {
+      fetch("http://localhost:8000/route", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ start: locations[0], end: locations[1] }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          // setRoute(data.path);
+          // setObstacleMode(true);
+        });
+    }
   };
 
   const handleAddObstacle = (obstacle) => {
