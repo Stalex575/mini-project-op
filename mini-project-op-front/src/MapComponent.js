@@ -21,7 +21,6 @@ const customIcon = new L.Icon({
 });
 
 const MapComponent = ({
-  onSelectLocations,
   route,
   onAddObstacle,
   obstacleMode,
@@ -45,7 +44,6 @@ const MapComponent = ({
         if (!obstacleMode && markers.length < 2 && validateMarker(e.latlng)) {
           const newMarkers = [...markers, [e.latlng.lat, e.latlng.lng]];
           onMarkersChange(newMarkers);
-          onSelectLocations(newMarkers);
         } else if (obstacleMode) {
           onAddObstacle([e.latlng.lat, e.latlng.lng]);
         }
@@ -58,7 +56,6 @@ const MapComponent = ({
   const handleRightClick = (idx) => {
     const updatedMarkers = markers.filter((_, i) => i !== idx);
     onMarkersChange(updatedMarkers); // Notify parent of marker changes
-    onSelectLocations(updatedMarkers);
   };
 
   return (

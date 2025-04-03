@@ -10,20 +10,18 @@ export default function MapPage() {
   const [longitude, setLongitude] = useState("");
   const [error, setError] = useState("");
 
-  const handleSelectLocations = (locations) => {
-    if (locations.length === 2) {
-      fetch("http://localhost:8000/route", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ start: locations[0], end: locations[1] }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data)
-          // setRoute(data.path);
-          // setObstacleMode(true);
-        });
-    }
+  const handleGetRoute = () => {
+    fetch("http://localhost:8000/route", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ start: markers[0], end: markers[1] }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        // setRoute(data.path);
+        // setObstacleMode(true);
+      });
   };
 
   const handleAddObstacle = (obstacle) => {
@@ -93,6 +91,7 @@ export default function MapPage() {
             <button
               className="action-button route-btn"
               disabled={markers.length !== 2}
+              onClick={handleGetRoute}
             >
               Get route
             </button>
@@ -100,7 +99,6 @@ export default function MapPage() {
         </div>
       </div>
       <MapComponent
-        onSelectLocations={handleSelectLocations}
         route={route}
         onAddObstacle={handleAddObstacle}
         obstacleMode={obstacleMode}
