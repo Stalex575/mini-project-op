@@ -18,9 +18,8 @@ export default function MapPage() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        // setRoute(data.path);
-        // setObstacleMode(true);
+        setRoute(data.route);
+        setObstacleMode(true);
       });
   };
 

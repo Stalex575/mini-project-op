@@ -78,11 +78,11 @@ const MapComponent = ({
         />
       ))}
 
-      {route.length > 0 && <Polyline positions={route} color="blue" />}
+      {route.length > 0 && <Polyline positions={route} color="#955ADE" />}
 
       {obstacleMode &&
         route.map((pos, idx) => (
-          <CircleMarker key={idx} center={pos} radius={5} color="red" />
+          <CircleMarker key={idx} center={pos} radius={2} color="royalblue" />
         ))}
     </MapContainer>
   );
