@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MapComponent from "./MapComponent";
 
 export default function MapPage() {
@@ -9,6 +9,20 @@ export default function MapPage() {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:8000/obstacles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: {},
+    }).then((res) => console.log(JSON.stringify(res)));
+    // .then((data) => {
+    //   console.log(data);
+    //   if (data) {
+    //     setObstacles(data.obstacles);
+    //   }
+    // });
+  });
 
   const handleSaveObstacles = () => {
     fetch("http://localhost:8000/obstacles", {
