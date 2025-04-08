@@ -10,6 +10,18 @@ export default function MapPage() {
   const [longitude, setLongitude] = useState("");
   const [error, setError] = useState("");
 
+  const handleSaveObstacles = () => {
+    fetch("http://localhost:8000/obstacles", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ obstacles }),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setObstacleMode(false);
+      });
+  };
+
   const handleGetRoute = () => {
     fetch("http://localhost:8000/route", {
       method: "POST",
@@ -19,7 +31,7 @@ export default function MapPage() {
       .then((res) => res.json())
       .then((data) => {
         setRoute(data.route);
-        setObstacleMode(true);
+        console.log("Route:", data.route);
       });
   };
 
@@ -50,7 +62,7 @@ export default function MapPage() {
   const handleAddMarker = () => {
     if (validateCoordinates()) {
       const newMarker = [parseFloat(latitude), parseFloat(longitude)];
-      setMarkers([...markers, newMarker]); // Update markers state
+      setMarkers([...markers, newMarker]);
       setLatitude("");
       setLongitude("");
     }
@@ -78,22 +90,37 @@ export default function MapPage() {
             <button
               className="action-button add-marker-btn"
               onClick={handleAddMarker}
-              disabled={!longitude || !latitude || markers.length === 2}
+              disabled={
+                !longitude || !latitude || markers.length === 2 || obstacleMode
+              }
             >
               Add
               <br />
               marker
             </button>
-            <button disabled={route} className="action-button blockade-btn">
+            <button
+              onClick={setObstacleMode}
+              className="action-button blockade-btn"
+            >
               Add blockade
             </button>
-            <button
-              className="action-button route-btn"
-              disabled={markers.length !== 2}
-              onClick={handleGetRoute}
-            >
-              Get route
-            </button>
+            {!obstacleMode ? (
+              <button
+                className="action-button route-btn"
+                disabled={markers.length !== 2 || !!route?.length}
+                onClick={handleGetRoute}
+              >
+                Get route
+              </button>
+            ) : (
+              <button
+                className="action-button obstacle-btn"
+                disabled={!obstacles}
+                onClick={handleSaveObstacles}
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -103,6 +130,8 @@ export default function MapPage() {
         obstacleMode={obstacleMode}
         onMarkersChange={setMarkers}
         markers={markers}
+        obstacles={obstacles}
+        onRouteChange={setRoute}
       />
     </section>
   );

@@ -26,7 +26,15 @@ const MapComponent = ({
   obstacleMode,
   onMarkersChange,
   markers,
+  obstacles,
+  onRouteChange,
 }) => {
+  const obstacleIcon = L.divIcon({
+    html: `<div style="width: 12px; height: 12px; background: crimson; transform: rotate(45deg); border-radius: 2px;"></div>`,
+    className: "",
+    iconSize: [12, 12],
+  });
+
   const validateMarker = (marker) => {
     const lat = marker.lat;
     const lng = marker.lng;
@@ -55,7 +63,8 @@ const MapComponent = ({
   // Remove marker on right-click
   const handleRightClick = (idx) => {
     const updatedMarkers = markers.filter((_, i) => i !== idx);
-    onMarkersChange(updatedMarkers); // Notify parent of marker changes
+    onMarkersChange(updatedMarkers);
+    onRouteChange([]); // Clear route when a marker is removed
   };
 
   return (
@@ -78,12 +87,27 @@ const MapComponent = ({
         />
       ))}
 
-      {route.length > 0 && <Polyline positions={route} color="#955ADE" />}
+      {route.length > 0 && (
+        <>
+          <Polyline positions={route} color="#955ADE" />
+          {route.map((pos, idx) => (
+            <CircleMarker
+              key={`route-node-${idx}`}
+              center={pos}
+              radius={5}
+              pathOptions={{
+                color: "#955ADE",
+                fillColor: "#955ADE",
+                fillOpacity: 1,
+              }}
+            />
+          ))}
+        </>
+      )}
 
-      {obstacleMode &&
-        route.map((pos, idx) => (
-          <CircleMarker key={idx} center={pos} radius={2} color="royalblue" />
-        ))}
+      {obstacles.map((pos, idx) => (
+        <Marker key={`obstacle-${idx}`} position={pos} icon={obstacleIcon} />
+      ))}
     </MapContainer>
   );
 };
