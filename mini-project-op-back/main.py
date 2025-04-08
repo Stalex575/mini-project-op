@@ -48,15 +48,31 @@ async def route(request: Request) -> dict:
     return {"route": route_coords}
 
 @app.post('/obstacles')
-async def obstacles(request: Request) -> None:
+async def obstacles(request: Request) -> dict | None:
     """
     Obstacles endpoint.
 
     :param request: Request, A frontend request with obstacles coordinates [[start, end], ...].
+    :return: dict | None, Sends obstacle coords or just appends new obstacles.
     """
     try:
         data = await request.json()
         graph = app.state.ukraine_graph
+
+        if not data:
+            obstacles_coords = []
+
+            with open('obstacles.csv', 'r', encoding='utf-8') as f:
+                reader = csv.reader(f)
+
+                for row in reader:
+                    if row:
+                        node_id = int(row[0])
+                        node_data = graph.nodes[node_id]
+                        lat, lon = node_data['y'], node_data['x']
+                        obstacles_coords.append([lat, lon])
+
+            return {"obstacles": obstacles_coords}
 
         node_ids = [
             ox.distance.nearest_nodes(graph, lon, lat)
