@@ -14,14 +14,14 @@ export default function MapPage() {
     fetch("http://localhost:8000/obstacles", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: {},
-    }).then((res) => console.log(JSON.stringify(res)));
-    // .then((data) => {
-    //   console.log(data);
-    //   if (data) {
-    //     setObstacles(data.obstacles);
-    //   }
-    // });
+      body: JSON.stringify({}),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data) {
+        setObstacles(data.obstacles);
+      }
+    });
   });
 
   const handleSaveObstacles = () => {
