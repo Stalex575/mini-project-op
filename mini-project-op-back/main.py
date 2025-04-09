@@ -6,6 +6,10 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 import osmnx as ox
 from routing import get_route, load_ukraine_graph
+import os
+
+G = ox.graph_from_place("Lviv, Ukraine", network_type="drive")
+ox.save_graphml(G, "lviv_drive.graphml")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -85,5 +89,58 @@ async def obstacles(request: Request) -> dict:
 
         return {"obstacles": obstacles_coords}
 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+@app.get('/unconfirmed-obstacles')
+async def get_unconfirmed_obstacles():
+    """
+    Endpoint for retrieving unconfirmed obstacles.
+
+    :return: dict — {'unconfirmed_obstacles': [{"id": node_id, "lat": lat, "lon": lon}, ...]}
+    """
+    try:
+        graph = app.state.ukraine_graph
+        obstacles = []
+
+        with open('obstacles.csv', 'r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row:
+                    node_id = int(row[0])
+                    node_data = graph.nodes[node_id]
+                    lat, lon = node_data['y'], node_data['x']
+                    obstacles.append({"id": node_id, "lat": lat, "lon": lon})
+
+        confirmed_ids = set()
+        if os.path.exists('obstacles_confirmed.csv'):
+            with open('obstacles_confirmed.csv', 'r', encoding='utf-8') as file:
+                confirmed_ids = {int(row[0]) for row in csv.reader(file) if row}
+        else:
+            confirmed_ids = set()
+        unconfirmed = [o for o in obstacles if o["id"] not in confirmed_ids]
+        return {"unconfirmed_obstacles": unconfirmed}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+@app.post('/confirm-obstacles')
+async def confirm_obstacles(request: Request):
+    """
+    Endpoint for confirming obstacles.
+
+    :param request: Request — JSON with 'confirmed_ids': [id1, id2, ...]
+    :return: dict — {'status': 'ok', 'confirmed': [id1, id2, ...]}    
+    """
+    try:
+        data = await request.json()
+        confirmed_ids = data.get("confirmed_ids", [])
+
+        with open('obstacles_confirmed.csv', 'a', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            for node_id in confirmed_ids:
+                writer.writerow([node_id])
+
+        return {"status": "ok", "confirmed": confirmed_ids}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
