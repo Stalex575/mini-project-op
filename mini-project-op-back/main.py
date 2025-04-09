@@ -60,10 +60,10 @@ async def obstacles(request: Request) -> dict:
         graph = app.state.ukraine_graph
 
         if data:
-            node_ids = [
+            node_ids = {
                 ox.distance.nearest_nodes(graph, lon, lat)
                 for lat, lon in data['obstacles']
-            ]
+            }
 
             with open('obstacles.csv', 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)

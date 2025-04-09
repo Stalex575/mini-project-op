@@ -1,5 +1,6 @@
 """Routing"""
 
+import csv
 import osmnx as ox
 import networkx as nx
 from geopy.distance import great_circle
@@ -36,6 +37,15 @@ def get_route(start: tuple, end: tuple, full_graph: nx.MultiDiGraph) -> list:
     :param full_graph: nx.MultiDiGraph, The Ukraine road network graph.
     :return: list, A route to follow.
     """
+    obstacles = set()
+
+    with open('obstacles.csv', 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+
+        for row in reader:
+            if row:
+                obstacles.add(int(row[0]))
+
     distance_km = great_circle(start, end).km
     margin_km = max(1, distance_km * 0.2)
     margin_deg = margin_km / 111.0
@@ -47,7 +57,7 @@ def get_route(start: tuple, end: tuple, full_graph: nx.MultiDiGraph) -> list:
 
     nodes_to_keep = [
         node for node, data in full_graph.nodes(data=True)
-        if south <= data['y'] <= north and west <= data['x'] <= east
+        if south <= data['y'] <= north and west <= data['x'] <= east and node not in obstacles
     ]
     subgraph = full_graph.subgraph(nodes_to_keep).copy()
 
