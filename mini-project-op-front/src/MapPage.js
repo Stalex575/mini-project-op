@@ -16,13 +16,13 @@ export default function MapPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
     })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data) {
-        setObstacles(data.obstacles);
-      }
-    });
-  });
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          setObstacles(data.obstacles);
+        }
+      });
+  }, []);
 
   const handleSaveObstacles = () => {
     fetch("http://localhost:8000/obstacles", {
@@ -31,7 +31,8 @@ export default function MapPage() {
       body: JSON.stringify({ obstacles }),
     })
       .then((res) => res.json())
-      .then(() => {
+      .then((data) => {
+        setObstacles(data.obstacles);
         setObstacleMode(false);
       });
   };

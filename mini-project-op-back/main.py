@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     :param app: FastAPI, A main app.
     """
     try:
-        app.state.ukraine_graph = load_ukraine_graph('ukraine_drive.graphml')
+        app.state.ukraine_graph = load_ukraine_graph('lviv_drive.graphml')
     except Exception as e:
         raise ValueError(f'Error loading map: {e}') from e
     yield
