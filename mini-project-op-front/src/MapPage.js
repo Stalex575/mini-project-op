@@ -46,7 +46,6 @@ export default function MapPage() {
       .then((res) => res.json())
       .then((data) => {
         setRoute(data.route);
-        console.log("Route:", data.route);
       });
   };
 
