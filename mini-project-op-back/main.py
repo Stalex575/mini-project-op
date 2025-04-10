@@ -8,18 +8,15 @@ import osmnx as ox
 from routing import get_route, load_ukraine_graph
 import os
 
-G = ox.graph_from_place("Lviv, Ukraine", network_type="drive")
-ox.save_graphml(G, "lviv_drive.graphml")
-
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(application: FastAPI):
     """
     Loads the Ukraine map in the app's state at the beggining.
 
-    :param app: FastAPI, A main app.
+    :param application: FastAPI, A main application.
     """
     try:
-        app.state.ukraine_graph = load_ukraine_graph('lviv_drive.graphml')
+        application.state.ukraine_graph = load_ukraine_graph('lviv_drive.graphml')
     except Exception as e:
         raise ValueError(f'Error loading map: {e}') from e
     yield
