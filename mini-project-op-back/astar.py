@@ -3,7 +3,8 @@
 import heapq
 import networkx as nx
 
-def custom_astar_algorithm(graph: nx.Graph, start_node: int, end_node: int, heuristic: 'function', weight: str) -> tuple:
+def custom_astar_algorithm(graph: nx.Graph, start_node: int, end_node: int,
+                           heuristic: 'function', weight: str) -> tuple:
     """
     A* algorithm implementation.
 

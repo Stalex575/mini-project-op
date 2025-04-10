@@ -1,12 +1,12 @@
 """Main"""
 
+import os
 import csv
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 import osmnx as ox
 from routing import get_route, load_ukraine_graph
-import os
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
