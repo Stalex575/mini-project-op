@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import heroMarker from "./assets/images/hero-marker.png";
 export default function Landing() {
   const [showTopBtn, setShowTopBtn] = useState(false);
   const navigate = useNavigate();
@@ -32,10 +33,13 @@ export default function Landing() {
             Find best routes to evacuate citizens from Ukrainian warzone. Made
             to suit any circumstances. For your convenience.
           </p>
+          <button className="action-button" onClick={() => navigate("/map")}>
+            To map
+          </button>
         </div>
-        <button className="action-button" onClick={() => navigate("/map")}>
-          To map
-        </button>
+        <div className="hero-image-container">
+          <img src={heroMarker} alt="hero-marker"></img>
+        </div>
       </section>
       <section className="guide">
         <h1 className="section-title">How to use it?</h1>

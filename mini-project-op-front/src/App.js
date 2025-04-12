@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./Landing";
 import MapPage from "./MapPage";
 import "./App.css";
+import "./media.css";
 
 function App() {
   return (

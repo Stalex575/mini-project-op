@@ -1,0 +1,80 @@
+@media (max-width: 1440px) {
+    .hero {
+      padding: 60px;
+      gap: 40px;
+    }
+    .hero-title {
+      font-size: 3.8rem;
+    }
+    .hero-description {
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .hero {
+      padding: 40px;
+      gap: 30px;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+    }
+    .hero-description {
+      font-size: 1.1rem;
+    }
+  }
+@media (max-width: 768px) {
+    .hero {
+      padding-left: 50px;
+    }
+    .hero-text {
+      width: 100%;
+    }
+    .hero-image-container {
+      display: none;
+    }
+    .hero-title {
+      font-size: 3.8rem;
+    }
+    .hero-description {
+      font-size: 1.2rem;
+    }
+    .video {
+        width: 80%;
+    }
+    section {
+        padding: 0 15px;
+        text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero {
+      padding: 10px;
+      text-align: center;
+      height: 100vh;
+    }
+    .hero-title {
+      font-size: 3rem;
+    }
+    .hero-description {
+      font-size: 0.9rem;
+    }
+    .section-title {
+      font-size: 1.8rem;
+    }
+    .section-subtitle {
+      font-size: 0.9rem;
+    }
+    section {
+        padding: 0 15px;
+        text-align: center;
+        height: 60vh;
+    }
+    .scroll-to-top {
+        display: none;
+    }
+  }
+  
+
+  
