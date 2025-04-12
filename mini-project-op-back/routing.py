@@ -77,5 +77,8 @@ def get_route(start: tuple, end: tuple, margin_coefficient: float, full_graph: n
         weight='length'
     )
 
+    if not route:
+        return [], []
+
     return [(subgraph.nodes[node]['y'], subgraph.nodes[node]['x']) for node in route], \
         [north, south, east, west]
