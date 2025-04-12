@@ -9,6 +9,7 @@ export default function MapPage() {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [error, setError] = useState("");
+  const [boxCoords, setBoxCoords] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:8000/obstacles", {
@@ -41,11 +42,16 @@ export default function MapPage() {
     fetch("http://localhost:8000/route", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ start: markers[0], end: markers[1] }),
+      body: JSON.stringify({ start: markers[0], end: markers[1], margin: 0.2 }),
     })
       .then((res) => res.json())
       .then((data) => {
+        if (data.route.length === 0) {
+          setError("No route found. Try increasing search area.");
+          return;
+        }
         setRoute(data.route);
+        setBoxCoords(data.bounding_box);
       });
   };
 

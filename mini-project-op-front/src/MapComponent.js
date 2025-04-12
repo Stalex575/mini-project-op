@@ -60,11 +60,10 @@ const MapComponent = ({
     return null;
   };
 
-  // Remove marker on right-click
-  const handleRightClick = (idx) => {
+  const handleRemoveMarker = (idx) => {
     const updatedMarkers = markers.filter((_, i) => i !== idx);
     onMarkersChange(updatedMarkers);
-    onRouteChange([]); // Clear route when a marker is removed
+    onRouteChange([]);
   };
 
   return (
@@ -82,7 +81,7 @@ const MapComponent = ({
           position={position}
           icon={customIcon}
           eventHandlers={{
-            contextmenu: () => handleRightClick(idx),
+            click: () => handleRemoveMarker(idx),
           }}
         />
       ))}
