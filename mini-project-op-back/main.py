@@ -43,10 +43,11 @@ async def route(request: Request) -> dict:
         data = await request.json()
         start = tuple(data['start'])
         end = tuple(data['end'])
-        route_coords = get_route(start, end, app.state.ukraine_graph)
+        margin = data['margin']
+        route_coords, bounding_box = get_route(start, end, margin, app.state.ukraine_graph)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
-    return {"route": route_coords}
+    return {"route": route_coords, "bounding_box": bounding_box}
 
 @app.post('/obstacles')
 async def obstacles(request: Request) -> dict:
