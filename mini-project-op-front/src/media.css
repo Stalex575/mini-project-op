@@ -46,6 +46,40 @@
         padding: 0 15px;
         text-align: center;
     }
+    .toolbar-container {
+        bottom: 0;
+        height: 150px;
+        left: 0;
+    }
+    .toolbar {
+        width: 100%;
+        height: 150px;
+        max-height: unset;
+        border-radius: 0;
+        border-top-left-radius: 20px; /* Top-left corner */
+        border-top-right-radius: 20px;
+    }
+    .toolbar-features {
+        justify-content: space-evenly;
+    }
+    .toolbar-buttons {
+        flex-direction: column;
+    }
+    .toolbar-inputs {
+        flex-direction: column;
+    }
+    .toolbar-buttons button {
+        width: 100%;
+    }
+    .toolbar button {
+        white-space: normal;
+        word-wrap: break-word;
+        text-align: center;
+        font-size: 1rem;
+    }
+    .add-marker-btn {
+        height: 50% !important;
+    }
   }
   
   @media (max-width: 480px) {
@@ -73,6 +107,9 @@
     }
     .scroll-to-top {
         display: none;
+    }
+    .toolbar button {
+        font-size: 0.7rem;
     }
   }
   

@@ -216,8 +216,7 @@ footer {
 }
 
 .toolbar {
-  min-height: 80px;
-  max-height: 100px;
+  height: 80px;
   width: fit-content;
   background-color: #000;
   border-radius: 20px;
@@ -231,7 +230,7 @@ footer {
   padding: 0px 15px;
   gap: 15px;
   height: 100%;
-  width: fit-content;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -241,20 +240,37 @@ footer {
   height: 70%;
 }
 
-.toolbar-features input {
-  height: 60%;
+.toolbar-buttons {
+  padding: 20px 0px;
+  display: flex;
+  gap: 15px;
+}
+
+.toolbar-inputs {
+  height: 100%;
+  padding: 18px 0px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.toolbar-inputs input {
+  height: 100%;
   border: none;
   border-radius: 10px;
   text-align: center;
   outline: none;
   transition: 0.3s;
 }
+.toolbar-buttons button {
+  padding: 15px 40px;
+}
 
-.toolbar-features input::placeholder {
+.toolbar-inputs input::placeholder {
   font-family: Franie-Light;
 }
 
-.toolbar-features input:focus {
+.toolbar-inputs input:focus {
   outline: none;
   box-shadow: inset #000 0px 0px 7px;
 }

@@ -91,16 +91,18 @@ export default function MapPage() {
         <div className="toolbar">
           {error && <p className="error-message">{error}</p>}
           <div className="toolbar-features">
-            <input
-              placeholder="Latitude"
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-            />
-            <input
-              placeholder="Longitude"
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
-            />
+            <div className="toolbar-inputs">
+              <input
+                placeholder="Latitude"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+              />
+              <input
+                placeholder="Longitude"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+              />
+            </div>
             <button
               className="action-button add-marker-btn"
               onClick={handleAddMarker}
@@ -112,29 +114,31 @@ export default function MapPage() {
               <br />
               marker
             </button>
-            <button
-              onClick={setObstacleMode}
-              className="action-button blockade-btn"
-            >
-              Add blockade
-            </button>
-            {!obstacleMode ? (
+            <div className="toolbar-buttons">
               <button
-                className="action-button route-btn"
-                disabled={markers.length !== 2 || !!route?.length}
-                onClick={handleGetRoute}
+                onClick={setObstacleMode}
+                className="action-button blockade-btn"
               >
-                Get route
+                Add blockade
               </button>
-            ) : (
-              <button
-                className="action-button obstacle-btn"
-                disabled={!obstacles}
-                onClick={handleSaveObstacles}
-              >
-                Save
-              </button>
-            )}
+              {!obstacleMode ? (
+                <button
+                  className="action-button route-btn"
+                  disabled={markers.length !== 2 || !!route?.length}
+                  onClick={handleGetRoute}
+                >
+                  Get route
+                </button>
+              ) : (
+                <button
+                  className="action-button obstacle-btn"
+                  disabled={!obstacles}
+                  onClick={handleSaveObstacles}
+                >
+                  Save
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
