@@ -29,12 +29,13 @@ def heuristic(u: int, v: int, g: nx.Graph) -> float:
 
     return great_circle((lat1, lon1), (lat2, lon2)).meters
 
-def get_route(start: tuple, end: tuple, full_graph: nx.MultiDiGraph) -> list:
+def get_route(start: tuple, end: tuple, margin_coefficient: float, full_graph: nx.MultiDiGraph) -> list:
     """
     Finds bounding box, the nearest nodes, then computes the route using A*.
 
     :param start: tuple, A start coordinates.
     :param end: tuple, An end coordinates.
+    :param margin_coefficient: float, A margin coefficient.
     :param full_graph: nx.MultiDiGraph, The Ukraine road network graph.
     :return: list, A route to follow.
     """
@@ -48,7 +49,7 @@ def get_route(start: tuple, end: tuple, full_graph: nx.MultiDiGraph) -> list:
                 obstacles.add(int(row[0]))
 
     distance_km = great_circle(start, end).km
-    margin_km = max(1, distance_km * 0.2)
+    margin_km = max(1, distance_km * margin_coefficient)
     margin_deg = margin_km / 111.0
 
     north = max(start[0], end[0]) + margin_deg
@@ -76,4 +77,5 @@ def get_route(start: tuple, end: tuple, full_graph: nx.MultiDiGraph) -> list:
         weight='length'
     )
 
-    return [(subgraph.nodes[node]['y'], subgraph.nodes[node]['x']) for node in route]
+    return [(subgraph.nodes[node]['y'], subgraph.nodes[node]['x']) for node in route], \
+        [north, south, east, west]
