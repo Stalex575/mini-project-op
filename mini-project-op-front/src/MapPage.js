@@ -10,6 +10,7 @@ export default function MapPage() {
   const [longitude, setLongitude] = useState("");
   const [error, setError] = useState("");
   const [boxCoords, setBoxCoords] = useState([]);
+  const [boxMargin, setBoxMargin] = useState(0.2);
 
   useEffect(() => {
     fetch("http://localhost:8000/obstacles", {
@@ -42,14 +43,19 @@ export default function MapPage() {
     fetch("http://localhost:8000/route", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ start: markers[0], end: markers[1], margin: 0.2 }),
+      body: JSON.stringify({
+        start: markers[0],
+        end: markers[1],
+        margin: boxMargin,
+      }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.route.length === 0) {
-          setError("No route found. Try increasing search area.");
+          setError("No route found. Increase search area and try again.");
           return;
         }
+        setError("");
         setRoute(data.route);
         setBoxCoords(data.bounding_box);
       });
@@ -93,6 +99,28 @@ export default function MapPage() {
       <div className="searchbar-container">
         <input placeholder="Search on map" className="searchbar"></input>
       </div>
+      <div className="bounding-box-controller-wrapper">
+        <div className="hover-text-container">
+          <h1 className="hover-text">
+            Search area
+            <br />
+            control
+          </h1>
+        </div>
+        <div className="bounding-box-controller-container">
+          <input
+            type="range"
+            min={0}
+            max={5}
+            step={0.1}
+            value={boxMargin}
+            onChange={(e) => setBoxMargin(e.target.value)}
+            className="bounding-box-controller"
+          ></input>
+          <label className="bounding-box-label">{boxMargin}</label>
+        </div>
+      </div>
+
       <div className="toolbar-container">
         <div className="toolbar">
           {error && <p className="error-message">{error}</p>}

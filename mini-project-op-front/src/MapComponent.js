@@ -70,7 +70,7 @@ const MapComponent = ({
     <MapContainer
       center={[49.8397, 24.0297]}
       zoom={13}
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100vh", width: "100%" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <MapClickHandler />
