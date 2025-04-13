@@ -1,5 +1,5 @@
 """Main"""
-
+from dotenv import load_dotenv
 import os
 import csv
 from contextlib import asynccontextmanager
@@ -7,6 +7,9 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 import osmnx as ox
 from routing import get_route, load_ukraine_graph
+
+load_dotenv()
+ADMIN_SECRET = os.getenv("ADMIN_SECRET")
 
 @asynccontextmanager
 async def lifespan(application: FastAPI):
@@ -90,13 +93,17 @@ async def obstacles(request: Request) -> dict:
         raise HTTPException(status_code=500, detail=str(e)) from e
 
 @app.get('/unconfirmed-obstacles')
-async def get_unconfirmed_obstacles():
+async def get_unconfirmed_obstacles(request: Request):
     """
     Endpoint for retrieving unconfirmed obstacles.
 
     :return: dict — {'unconfirmed_obstacles': [{"id": node_id, "lat": lat, "lon": lon}, ...]}
     """
     try:
+        secret = request.headers.get("ADMIN_SECRET")
+        if secret != ADMIN_SECRET:
+            raise HTTPException(status_code=403, detail="Forbidden")
+
         graph = app.state.ukraine_graph
         obstacles = []
 
@@ -130,6 +137,10 @@ async def confirm_obstacles(request: Request):
     :return: dict — {'status': 'ok', 'confirmed': [id1, id2, ...]}    
     """
     try:
+        secret = request.headers.get("ADMIN_SECRET")
+        if secret != ADMIN_SECRET:
+            raise HTTPException(status_code=403, detail="Forbidden")
+
         data = await request.json()
         unconfirmed_ids = data.get("unconfirmed_ids", [])
 
