@@ -44,7 +44,8 @@ async def route(request: Request) -> dict:
         start = tuple(data['start'])
         end = tuple(data['end'])
         margin = data['margin']
-        route_coords, bounding_box = get_route(start, end, margin, app.state.ukraine_graph)
+        algorithm = data['algorithm']
+        route_coords, bounding_box = get_route(start, end, margin, algorithm, app.state.ukraine_graph)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
     return {"route": route_coords, "bounding_box": bounding_box}

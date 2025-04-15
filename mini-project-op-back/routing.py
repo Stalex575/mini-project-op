@@ -30,13 +30,14 @@ def heuristic(u: int, v: int, g: nx.Graph) -> float:
 
     return great_circle((lat1, lon1), (lat2, lon2)).meters
 
-def get_route(start: tuple, end: tuple, margin_coefficient: float, full_graph: nx.MultiDiGraph) -> list:
+def get_route(start: tuple, end: tuple, margin_coefficient: float, algorithm: str, full_graph: nx.MultiDiGraph) -> list:
     """
     Finds bounding box, the nearest nodes, then computes the route using A*.
 
     :param start: tuple, A start coordinates.
     :param end: tuple, An end coordinates.
     :param margin_coefficient: float, A margin coefficient.
+    :param algorithm: str, An algorithm to get route.
     :param full_graph: nx.MultiDiGraph, The Ukraine road network graph.
     :return: list, A route to follow.
     """
@@ -70,13 +71,26 @@ def get_route(start: tuple, end: tuple, margin_coefficient: float, full_graph: n
     start_node = ox.distance.nearest_nodes(subgraph, start[1], start[0])
     end_node = ox.distance.nearest_nodes(subgraph, end[1], end[0])
 
-    route, _ = custom_astar_algorithm(
-        subgraph,
-        start_node,
-        end_node,
-        heuristic,
-        weight='length'
-    )
+    match algorithm:
+        case 'A-star':
+            route, _ = custom_astar_algorithm(
+                subgraph,
+                start_node,
+                end_node,
+                heuristic,
+                weight='length'
+            )
+
+        case 'Ant colony':
+            route, _ = custom_ant_colony_algorithm(
+                subgraph,
+                start_node,
+                end_node,
+                weight='length'
+            )
+
+        case _:
+            return [], []
 
     if not route:
         return [], []
