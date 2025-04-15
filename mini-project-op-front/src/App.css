@@ -35,6 +35,11 @@ body {
   overflow-x: hidden;
 }
 
+.nomargin {
+  margin: 0;
+  padding: 0;
+}
+
 .wrapper {
   background: url('./assets/images/bg2.png');
   background-size: cover;
@@ -376,4 +381,21 @@ button:disabled:hover {
 .bounding-box-label {
   display: block;
   color: #fff;
+}
+
+.alg-controller-container {
+  font-family: 'Franie-Light';
+  background-color: #000;
+  min-width: 30%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  color: #fff;
+  border-radius: 10px;
+  padding: 5px;
 }

@@ -24,6 +24,7 @@ const MapComponent = () => {
     obstacleMode,
     setMap,
     validateCoordinates,
+    boxCoords,
   } = useMap();
 
   const customIcon = new L.Icon({
@@ -113,6 +114,19 @@ const MapComponent = () => {
       {obstacles.map((pos, idx) => (
         <Marker key={`obstacle-${idx}`} position={pos} icon={obstacleIcon} />
       ))}
+
+      {boxCoords.length === 5 && (
+        <Polyline
+          positions={[
+            boxCoords[0],
+            boxCoords[1],
+            boxCoords[2],
+            boxCoords[3],
+            boxCoords[4],
+          ]}
+          color="#64130C"
+        />
+      )}
     </MapContainer>
   );
 };

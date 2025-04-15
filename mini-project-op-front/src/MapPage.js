@@ -18,7 +18,6 @@ export default function MapPage() {
     setLongitude,
     error,
     setError,
-    boxCoords,
     setBoxCoords,
     boxMargin,
     setBoxMargin,
@@ -26,6 +25,8 @@ export default function MapPage() {
     setSearchQuery,
     map,
     validateCoordinates,
+    selectedAlgorithm,
+    setSelectedAlgorithm,
   } = useMap();
 
   useEffect(() => {
@@ -54,15 +55,9 @@ export default function MapPage() {
           const location = data[0];
           const lat = parseFloat(location.lat);
           const lon = parseFloat(location.lon);
-
-          if (map) {
-            map.setView([lat, lon], 13);
-
-            const newMarkers = [...markers, [lat, lon]];
-            setMarkers(newMarkers);
-          }
+          map.setView([lat, lon], 13);
         } else {
-          alert("Location not found in Ukraine.");
+          setError("Location not found in Ukraine.");
         }
       } catch (error) {
         console.error("Error fetching location:", error);
@@ -97,6 +92,7 @@ export default function MapPage() {
         start: markers[0],
         end: markers[1],
         margin: parseFloat(boxMargin),
+        algorithm: selectedAlgorithm,
       }),
     })
       .then((res) => res.json())
@@ -108,12 +104,7 @@ export default function MapPage() {
         setError("");
         setRoute(data.route);
         setBoxCoords(data.bounding_box);
-        console.log(boxCoords);
       });
-  };
-
-  const handleAddObstacle = (obstacle) => {
-    setObstacles([...obstacles, obstacle]);
   };
 
   const handleAddMarker = () => {
@@ -135,6 +126,33 @@ export default function MapPage() {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyPress}
         ></input>
+      </div>
+      <div className="alg-controller-container">
+        <p className="nomargin">Select algorithm:</p>
+        <label>
+          <input
+            type="radio"
+            name="alg-picker"
+            checked={selectedAlgorithm === "A-star"}
+            onChange={(e) => {
+              setSelectedAlgorithm(e.target.value);
+            }}
+            value="A-star"
+          />
+          A-star
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="alg-picker"
+            value="Ant colony"
+            checked={selectedAlgorithm === "Ant colony"}
+            onChange={(e) => {
+              setSelectedAlgorithm(e.target.value);
+            }}
+          />
+          Ant colony
+        </label>
       </div>
       <div className="bounding-box-controller-wrapper">
         <div className="hover-text-container">
@@ -213,17 +231,7 @@ export default function MapPage() {
           </div>
         </div>
       </div>
-      <MapComponent
-        route={route}
-        onAddObstacle={handleAddObstacle}
-        obstacleMode={obstacleMode}
-        onMarkersChange={setMarkers}
-        markers={markers}
-        obstacles={obstacles}
-        onRouteChange={setRoute}
-        boxCoords={boxCoords}
-        searchQuery={searchQuery}
-      />
+      <MapComponent />
     </section>
   );
 }

@@ -80,6 +80,10 @@
     .add-marker-btn {
         height: 50% !important;
     }
+    .searchbar-container {
+      padding: 0px 50px;
+    }
+    
   }
   
   @media (max-width: 480px) {
@@ -113,6 +117,9 @@
     }
     .hover-text {
         font-size: 0.9rem;
+    }
+    .alg-controller-container {
+      width: 70%;
     }
   }
   
