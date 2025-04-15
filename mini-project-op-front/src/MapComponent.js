@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -10,60 +11,65 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { useMap } from "./MapContext";
 
-const customIcon = new L.Icon({
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
+const MapComponent = () => {
+  const {
+    markers,
+    setMarkers,
+    obstacles,
+    route,
+    setRoute,
+    setObstacles,
+    obstacleMode,
+    setMap,
+    validateCoordinates,
+  } = useMap();
 
-const MapComponent = ({
-  route,
-  onAddObstacle,
-  obstacleMode,
-  onMarkersChange,
-  markers,
-  obstacles,
-  onRouteChange,
-}) => {
+  const customIcon = new L.Icon({
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
   const obstacleIcon = L.divIcon({
     html: `<div style="width: 12px; height: 12px; background: crimson; transform: rotate(45deg); border-radius: 2px;"></div>`,
     className: "",
     iconSize: [12, 12],
   });
-
-  const validateMarker = (marker) => {
-    const lat = marker.lat;
-    const lng = marker.lng;
-    if (isNaN(lat) || lat < 44.38 || lat > 52.38) {
-      return false;
-    }
-    if (isNaN(lng) || lng < 22.14 || lng > 40.23) {
-      return false;
-    }
-    return true;
-  };
   const MapClickHandler = () => {
-    useMapEvents({
+    const map = useMapEvents({
       click: (e) => {
-        if (!obstacleMode && markers.length < 2 && validateMarker(e.latlng)) {
+        if (
+          !obstacleMode &&
+          markers.length < 2 &&
+          validateCoordinates(e.latlng.lat, e.latlng.lng)
+        ) {
           const newMarkers = [...markers, [e.latlng.lat, e.latlng.lng]];
-          onMarkersChange(newMarkers);
-        } else if (obstacleMode) {
-          onAddObstacle([e.latlng.lat, e.latlng.lng]);
+          setMarkers(newMarkers);
+        } else if (
+          obstacleMode &&
+          validateCoordinates(e.latlng.lat, e.latlng.lng)
+        ) {
+          setObstacles([...obstacles, [e.latlng.lat, e.latlng.lng]]);
         }
       },
     });
+
+    useEffect(() => {
+      setMap(map);
+    }, [map]);
+
     return null;
   };
 
   const handleRemoveMarker = (idx) => {
     const updatedMarkers = markers.filter((_, i) => i !== idx);
-    onMarkersChange(updatedMarkers);
-    onRouteChange([]);
+    setMarkers(updatedMarkers);
+    setRoute([]);
   };
 
   return (

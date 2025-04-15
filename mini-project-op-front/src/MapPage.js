@@ -1,16 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import MapComponent from "./MapComponent";
+import { useMap } from "./MapContext";
 
 export default function MapPage() {
-  const [route, setRoute] = useState([]);
-  const [obstacles, setObstacles] = useState([]);
-  const [obstacleMode, setObstacleMode] = useState(false);
-  const [markers, setMarkers] = useState([]);
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [error, setError] = useState("");
-  const [boxCoords, setBoxCoords] = useState([]);
-  const [boxMargin, setBoxMargin] = useState(0.2);
+  const {
+    route,
+    setRoute,
+    obstacles,
+    setObstacles,
+    obstacleMode,
+    setObstacleMode,
+    markers,
+    setMarkers,
+    latitude,
+    setLatitude,
+    longitude,
+    setLongitude,
+    error,
+    setError,
+    boxCoords,
+    setBoxCoords,
+    boxMargin,
+    setBoxMargin,
+    searchQuery,
+    setSearchQuery,
+    map,
+    validateCoordinates,
+  } = useMap();
 
   useEffect(() => {
     fetch("http://localhost:8000/obstacles", {
@@ -25,6 +41,40 @@ export default function MapPage() {
         }
       });
   }, []);
+
+  const handleSearch = async () => {
+    if (searchQuery) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${searchQuery}&format=json&addressdetails=1&bounded=1&viewbox=22.14,52.38,40.23,44.38`
+        );
+        const data = await response.json();
+
+        if (data.length > 0) {
+          const location = data[0];
+          const lat = parseFloat(location.lat);
+          const lon = parseFloat(location.lon);
+
+          if (map) {
+            map.setView([lat, lon], 13);
+
+            const newMarkers = [...markers, [lat, lon]];
+            setMarkers(newMarkers);
+          }
+        } else {
+          alert("Location not found in Ukraine.");
+        }
+      } catch (error) {
+        console.error("Error fetching location:", error);
+      }
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   const handleSaveObstacles = () => {
     fetch("http://localhost:8000/obstacles", {
@@ -58,31 +108,12 @@ export default function MapPage() {
         setError("");
         setRoute(data.route);
         setBoxCoords(data.bounding_box);
+        console.log(boxCoords);
       });
   };
 
   const handleAddObstacle = (obstacle) => {
     setObstacles([...obstacles, obstacle]);
-  };
-
-  const validateCoordinates = () => {
-    const lat = parseFloat(latitude);
-    const lng = parseFloat(longitude);
-
-    if (isNaN(lat) || lat < 44.38 || lat > 52.38) {
-      setError("Latitude must be between 44.38 and 52.38 (Ukraine territory).");
-      return false;
-    }
-
-    if (isNaN(lng) || lng < 22.14 || lng > 40.23) {
-      setError(
-        "Longitude must be between 22.14 and 40.23 (Ukraine territory)."
-      );
-      return false;
-    }
-
-    setError("");
-    return true;
   };
 
   const handleAddMarker = () => {
@@ -97,7 +128,13 @@ export default function MapPage() {
   return (
     <section>
       <div className="searchbar-container">
-        <input placeholder="Search on map" className="searchbar"></input>
+        <input
+          placeholder="Search on map"
+          className="searchbar"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleKeyPress}
+        ></input>
       </div>
       <div className="bounding-box-controller-wrapper">
         <div className="hover-text-container">
@@ -184,6 +221,8 @@ export default function MapPage() {
         markers={markers}
         obstacles={obstacles}
         onRouteChange={setRoute}
+        boxCoords={boxCoords}
+        searchQuery={searchQuery}
       />
     </section>
   );
