@@ -75,7 +75,7 @@ async def obstacles(request: Request) -> dict:
 
         obstacles_coords = []
 
-        with open('obstacles_unconfirmed.csv', 'r', encoding='utf-8') as f:
+        with open('obstacles_unconfirmed.csv', encoding='utf-8') as f:
             reader = csv.reader(f)
 
             for row in reader:

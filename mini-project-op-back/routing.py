@@ -5,6 +5,7 @@ import osmnx as ox
 import networkx as nx
 from geopy.distance import great_circle
 from astar import custom_astar_algorithm
+from ant_colony import custom_ant_colony_algorithm
 
 def load_ukraine_graph(path: str) -> nx.MultiDiGraph:
     """
@@ -41,7 +42,7 @@ def get_route(start: tuple, end: tuple, margin_coefficient: float, full_graph: n
     """
     obstacles = set()
 
-    with open('obstacles.csv', 'r', encoding='utf-8') as f:
+    with open('obstacles_unconfirmed.csv', encoding='utf-8') as f:
         reader = csv.reader(f)
 
         for row in reader:

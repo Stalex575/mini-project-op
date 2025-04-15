@@ -1,6 +1,5 @@
 import random
 
-
 def custom_ant_colony_algorithm(
     graph,
     start,
@@ -16,8 +15,18 @@ def custom_ant_colony_algorithm(
     def sorted_edge(u, v):
         return (u, v) if u < v else (v, u)
 
-    pheromones = {sorted_edge(u, v): 1.0 for u, v in graph.edges}
-    edge_weights = {sorted_edge(u, v): data.get(weight, 1.0) for u, v, data in graph.edges(data=True)}
+    pheromones = {}
+    edge_weights = {}
+
+    for u, v, _, data in graph.edges(data=True, keys=True):
+        edge = sorted_edge(u, v)
+        current_weight = data.get(weight, 1.0)
+
+        if edge not in edge_weights or current_weight < edge_weights[edge]:
+            edge_weights[edge] = current_weight
+
+        if edge not in pheromones:
+            pheromones[edge] = 1.0
 
     best_path = []
     best_cost = float("inf")
