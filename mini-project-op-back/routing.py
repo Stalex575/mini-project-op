@@ -82,4 +82,4 @@ def get_route(start: tuple, end: tuple, margin_coefficient: float, full_graph: n
         return [], []
 
     return [(subgraph.nodes[node]['y'], subgraph.nodes[node]['x']) for node in route], \
-        [north, south, east, west]
+        [[north, west], [north, east], [south, east], [south, west], [north, west]]
