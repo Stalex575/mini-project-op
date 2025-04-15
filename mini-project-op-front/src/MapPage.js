@@ -96,7 +96,7 @@ export default function MapPage() {
       body: JSON.stringify({
         start: markers[0],
         end: markers[1],
-        margin: boxMargin,
+        margin: parseFloat(boxMargin),
       }),
     })
       .then((res) => res.json())

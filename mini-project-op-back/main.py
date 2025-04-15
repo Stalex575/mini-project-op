@@ -67,7 +67,7 @@ async def obstacles(request: Request) -> dict:
                 for lat, lon in data['obstacles']
             }
 
-            with open('obstacles.csv', 'a', newline='', encoding='utf-8') as f:
+            with open('obstacles_unconfirmed.csv', 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
 
                 for node_id in node_ids:
@@ -75,7 +75,7 @@ async def obstacles(request: Request) -> dict:
 
         obstacles_coords = []
 
-        with open('obstacles.csv', 'r', encoding='utf-8') as f:
+        with open('obstacles_unconfirmed.csv', 'r', encoding='utf-8') as f:
             reader = csv.reader(f)
 
             for row in reader:
@@ -101,7 +101,7 @@ async def get_unconfirmed_obstacles():
         graph = app.state.ukraine_graph
         obstacles = []
 
-        with open('obstacles.csv', 'r', encoding='utf-8') as file:
+        with open('obstacles_unconfirmed.csv', 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
             for row in reader:
                 if row:
@@ -132,13 +132,30 @@ async def confirm_obstacles(request: Request):
     """
     try:
         data = await request.json()
-        confirmed_ids = data.get("confirmed_ids", [])
+        unconfirmed_ids = data.get("unconfirmed_ids", [])
 
-        with open('obstacles_confirmed.csv', 'a', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
-            for node_id in confirmed_ids:
-                writer.writerow([node_id])
+        with open('obstacles_unconfirmed.csv', 'r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            unconfirmed_rows = [row for row in reader if row]
+        confirmed_ids = []
+        deleted_ids = []
 
-        return {"status": "ok", "confirmed": confirmed_ids}
+        with open('obstacles_confirmed.csv', 'w', encoding='utf-8'):
+            writer = csv.writer(file)
+            for row in unconfirmed_rows:
+                node_id = int(row[0])
+                if node_id in unconfirmed_ids:
+                    deleted_ids.append(node_id)
+                else:
+                    confirmed_ids.append(node_id)
+                    writer.writerow([node_id])
+        open('obstacles_unconfirmed.csv', 'w', encoding='utf-8').close()
+
+        return {
+            "status": "ok",
+            "confirmed": confirmed_ids,
+            "deleted": deleted_ids
+        }
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
