@@ -131,6 +131,11 @@ export default function MapPage() {
 
   return (
     <section>
+      <div className="map-header-container">
+        <a href="/" className="project-name">
+          EXODUS
+        </a>
+      </div>
       <div className="searchbar-container">
         <input
           placeholder="Search on map"

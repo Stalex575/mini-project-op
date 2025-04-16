@@ -53,6 +53,36 @@ section {
   width: 100%;
 }
 
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  transition: background-color 0.4s ease;
+  z-index: 1000;
+}
+
+.top-bar.scrolled {
+  background-color: black;
+}
+
+.project-name {
+  font-family: "Franie-Extrabold", sans-serif;
+  font-size: 30px;
+  color: white;
+  text-decoration: none;
+  transition: color 0.4s ease;
+}
+
+.project-name:hover {
+  color: #ccc;
+}
+
 .hero {
   padding-left: 160px;
   display: flex;
@@ -399,3 +429,19 @@ button:disabled:hover {
   border-radius: 10px;
   padding: 5px;
 }
+
+.map-header-container {
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+  top: 10px;
+  z-index: 999;
+  background: transparent;
+}
+
+.map-header-container a {
+  border-radius: 10px;
+  background-color: #000;
+  padding: 10px;
+}
+

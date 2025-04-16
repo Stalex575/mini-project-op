@@ -3,10 +3,22 @@ import { useNavigate } from "react-router-dom";
 import heroMarker from "./assets/images/hero-marker.png";
 export default function Landing() {
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true); // Change background to black when scrolled
+      } else {
+        setIsScrolled(false); // Reset background to transparent
+      }
+
+      if (window.scrollY > window.innerHeight) {
+        setShowTopBtn(true);
+      } else {
+        setShowTopBtn(false);
+      }
       if (window.scrollY > window.innerHeight) {
         setShowTopBtn(true);
       } else {
@@ -26,6 +38,11 @@ export default function Landing() {
   };
   return (
     <div className="wrapper">
+      <div className={`top-bar ${isScrolled ? "scrolled" : ""}`}>
+        <a href="/" className="project-name">
+          EXODUS
+        </a>
+      </div>
       <section className="hero">
         <div className="hero-text">
           <h1 className="hero-title">Evacuation made easy</h1>
@@ -64,9 +81,7 @@ export default function Landing() {
         <button className="action-button">Email us!</button>
       </section>
       <footer>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit, harum?
-        </p>
+        <p>©EXODUS 2025</p>
       </footer>
       <button
         className={`scroll-to-top ${showTopBtn ? "visible" : ""}`}
