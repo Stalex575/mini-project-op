@@ -4,7 +4,7 @@ def custom_ant_colony_algorithm(
     graph,
     start,
     end,
-    ant_count=15,
+    ant_count=250,
     iterations=75,
     alpha=1.0,
     beta=3.0,
