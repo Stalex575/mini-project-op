@@ -27,7 +27,19 @@ export default function MapPage() {
     validateCoordinates,
     selectedAlgorithm,
     setSelectedAlgorithm,
+    routeBtnDisabled,
+    setRouteBtnDisabled,
   } = useMap();
+
+  useEffect(() => {
+    if (markers.length === 2 && route.length === 0) {
+      setRouteBtnDisabled(false);
+    } else if (route.length > 0 && !obstacleMode) {
+      setRouteBtnDisabled(false);
+    } else {
+      setRouteBtnDisabled(true);
+    }
+  }, [markers, obstacleMode]);
 
   useEffect(() => {
     fetch("http://localhost:8000/obstacles", {
@@ -104,6 +116,7 @@ export default function MapPage() {
         setError("");
         setRoute(data.route);
         setBoxCoords(data.bounding_box);
+        setRouteBtnDisabled(true);
       });
   };
 
@@ -136,6 +149,7 @@ export default function MapPage() {
             checked={selectedAlgorithm === "A-star"}
             onChange={(e) => {
               setSelectedAlgorithm(e.target.value);
+              setRouteBtnDisabled(false);
             }}
             value="A-star"
           />
@@ -149,6 +163,7 @@ export default function MapPage() {
             checked={selectedAlgorithm === "Ant colony"}
             onChange={(e) => {
               setSelectedAlgorithm(e.target.value);
+              setRouteBtnDisabled(false);
             }}
           />
           Ant colony
@@ -169,7 +184,10 @@ export default function MapPage() {
             max={5}
             step={0.1}
             value={boxMargin}
-            onChange={(e) => setBoxMargin(e.target.value)}
+            onChange={(e) => {
+              setBoxMargin(e.target.value);
+              setRouteBtnDisabled(false);
+            }}
             className="bounding-box-controller"
           ></input>
           <label className="bounding-box-label">{boxMargin}</label>
@@ -213,7 +231,7 @@ export default function MapPage() {
               {!obstacleMode ? (
                 <button
                   className="action-button route-btn"
-                  disabled={markers.length !== 2 || !!route?.length}
+                  disabled={routeBtnDisabled}
                   onClick={handleGetRoute}
                 >
                   Get route

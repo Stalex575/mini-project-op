@@ -17,6 +17,7 @@ export const MapProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [map, setMap] = useState(null);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("A-star");
+  const [routeBtnDisabled, setRouteBtnDisabled] = useState(true);
   const validateCoordinates = (
     lat = parseFloat(latitude),
     lng = parseFloat(longitude)
@@ -64,6 +65,8 @@ export const MapProvider = ({ children }) => {
         validateCoordinates,
         selectedAlgorithm,
         setSelectedAlgorithm,
+        routeBtnDisabled,
+        setRouteBtnDisabled,
       }}
     >
       {children}
