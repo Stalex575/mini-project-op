@@ -152,7 +152,7 @@ async def confirm_obstacles(request: Request):
         confirmed_ids = []
         deleted_ids = []
 
-        with open('obstacles_confirmed.csv', 'w', encoding='utf-8'):
+        with open('obstacles_confirmed.csv', 'w', encoding='utf-8') as file:
             writer = csv.writer(file)
             for row in unconfirmed_rows:
                 node_id = int(row[0])
