@@ -1,0 +1,6 @@
+osmnx
+networkx
+geopy
+python-dotenv
+fastapi
+uvicorn
