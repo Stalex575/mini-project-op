@@ -32,6 +32,9 @@ export default function MapPage() {
   } = useMap();
 
   useEffect(() => {
+    handleSetBtnState();
+  }, [markers, obstacleMode]);
+  const handleSetBtnState = () => {
     if (markers.length === 2 && route.length === 0) {
       setRouteBtnDisabled(false);
     } else if (route.length > 0 && !obstacleMode) {
@@ -39,8 +42,7 @@ export default function MapPage() {
     } else {
       setRouteBtnDisabled(true);
     }
-  }, [markers, obstacleMode]);
-
+  };
   useEffect(() => {
     fetch("http://localhost:8000/obstacles", {
       method: "POST",
@@ -154,7 +156,7 @@ export default function MapPage() {
             checked={selectedAlgorithm === "A-star"}
             onChange={(e) => {
               setSelectedAlgorithm(e.target.value);
-              setRouteBtnDisabled(false);
+              handleSetBtnState();
             }}
             value="A-star"
           />
@@ -168,7 +170,7 @@ export default function MapPage() {
             checked={selectedAlgorithm === "Ant colony"}
             onChange={(e) => {
               setSelectedAlgorithm(e.target.value);
-              setRouteBtnDisabled(false);
+              handleSetBtnState();
             }}
           />
           Ant colony
@@ -191,7 +193,7 @@ export default function MapPage() {
             value={boxMargin}
             onChange={(e) => {
               setBoxMargin(e.target.value);
-              setRouteBtnDisabled(false);
+              handleSetBtnState();
             }}
             className="bounding-box-controller"
           ></input>

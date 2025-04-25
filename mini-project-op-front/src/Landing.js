@@ -9,9 +9,9 @@ export default function Landing() {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
-        setIsScrolled(true); // Change background to black when scrolled
+        setIsScrolled(true);
       } else {
-        setIsScrolled(false); // Reset background to transparent
+        setIsScrolled(false);
       }
 
       if (window.scrollY > window.innerHeight) {
