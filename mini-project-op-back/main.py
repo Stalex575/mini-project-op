@@ -159,17 +159,20 @@ async def confirm_obstacles(request: Request):
             for node_id in confirmed_ids:
                 writer.writerow([node_id])
 
-        remaining_unconfirmed = all_ids - confirmed_ids
         with open('obstacles_unconfirmed.csv', 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
-            for node_id in remaining_unconfirmed:
+            for node_id in (all_ids - confirmed_ids):
                 writer.writerow([node_id])
+
 
         return {
             "status": "ok",
             "confirmed": list(confirmed_ids),
-            "unconfirmed": list(remaining_unconfirmed)
+            "unconfirmed": list(all_ids - confirmed_ids)
         }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
@@ -199,7 +202,6 @@ async def delete_obstacle(request: Request):
                 writer = csv.writer(f)
                 writer.writerows(confirmed)
 
-        # Видаляємо з unconfirmed
         if os.path.exists('obstacles_unconfirmed.csv'):
             with open('obstacles_unconfirmed.csv', encoding='utf-8') as f:
                 unconfirmed = [row for row in csv.reader(f) if row and int(row[0]) != node_id]
