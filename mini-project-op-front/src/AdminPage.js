@@ -20,7 +20,7 @@ export default function AdminPanel() {
       setConfirmed(res.data.confirmed);
       setUnconfirmed(res.data.unconfirmed);
     } catch (err) {
-      setError('Помилка завантаження. Перевірте секрет або сервер.');
+      setError('Failed to load. Check your secret or the server.');
     } finally {
       setLoading(false);
     }
@@ -51,14 +51,14 @@ export default function AdminPanel() {
         }
       });
       fetchObstacles();
-      alert('Оновлено!');
+      alert('Updated!');
     } catch (err) {
-      alert('Помилка при оновленні!');
+      alert('Failed to update!');
     }
   };
 
   const deleteObstacle = async (id) => {
-    if (!window.confirm(`Ви впевнені, що хочете видалити перешкоду #${id}?`)) return;
+    if (!window.confirm(`Are you sure you want to delete obstacle #${id}?`)) return;
     try {
       await axios.post(`${API_URL}/delete-obstacle`, 
         { node_id: id }, 
@@ -68,40 +68,42 @@ export default function AdminPanel() {
       );
       fetchObstacles();
     } catch (err) {
-      alert('Помилка при видаленні!');
+      alert('Failed to delete!');
     }
   };
-  
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Панель адміністратора</h1>
+      <h1 className="text-2xl font-bold mb-4">Admin Panel</h1>
 
+      {/* Secret input and fetch button */}
       <div className="mb-4 flex flex-wrap gap-2">
         <input
           type="password"
           value={secret}
           onChange={e => setSecret(e.target.value)}
-          placeholder="Введіть ADMIN_SECRET"
+          placeholder="Enter ADMIN_SECRET"
           className="border p-2 rounded"
         />
         <button
           onClick={fetchObstacles}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Завантажити
+          Load
         </button>
       </div>
 
+      {/* Error message */}
       {error && <div className="text-red-500 mb-4">{error}</div>}
 
       {loading ? (
-        <p>Завантаження...</p>
+        <p>Loading...</p>
       ) : (
         secret && (
           <div className="space-y-6">
+            {/* Confirmed obstacles list */}
             <div>
-              <h2 className="text-xl font-semibold mb-2">✅ Підтверджені</h2>
+              <h2 className="text-xl font-semibold mb-2">✅ Confirmed</h2>
               <ul className="space-y-1">
                 {confirmed.map(obs => (
                   <li key={obs.id} className="flex items-center gap-2">
@@ -122,8 +124,9 @@ export default function AdminPanel() {
               </ul>
             </div>
 
+            {/* Unconfirmed obstacles list */}
             <div>
-              <h2 className="text-xl font-semibold mb-2">❌ Непідтверджені</h2>
+              <h2 className="text-xl font-semibold mb-2">❌ Unconfirmed</h2>
               <ul className="space-y-1">
                 {unconfirmed.map(obs => (
                   <li key={obs.id} className="flex items-center gap-2">
@@ -144,12 +147,13 @@ export default function AdminPanel() {
               </ul>
             </div>
 
+            {/* Submit button */}
             <div>
               <button
                 onClick={submitChanges}
                 className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
               >
-                Оновити підтверджені
+                Update Confirmed
               </button>
             </div>
           </div>
