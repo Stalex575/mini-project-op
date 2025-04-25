@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MapComponent from "./MapComponent";
 import { useMap } from "./MapContext";
-
+const API_URL = process.env.REACT_APP_API_URL || "${API_URL}";
 export default function MapPage() {
   const {
     route,
@@ -44,7 +44,7 @@ export default function MapPage() {
     }
   };
   useEffect(() => {
-    fetch("http://localhost:8000/obstacles", {
+    fetch(`${API_URL}/obstacles`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
@@ -86,7 +86,7 @@ export default function MapPage() {
   };
 
   const handleSaveObstacles = () => {
-    fetch("http://localhost:8000/obstacles", {
+    fetch(`${API_URL}/obstacles`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ obstacles }),
@@ -99,7 +99,7 @@ export default function MapPage() {
   };
 
   const handleGetRoute = () => {
-    fetch("http://localhost:8000/route", {
+    fetch(`${API_URL}/route`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
