@@ -43,7 +43,7 @@ def get_route(start: tuple, end: tuple, margin_coefficient: float, algorithm: st
     """
     obstacles = set()
 
-    with open('obstacles_unconfirmed.csv', encoding='utf-8') as f:
+    with open('obstacles_confirmed.csv', encoding='utf-8') as f:
         reader = csv.reader(f)
 
         for row in reader:
