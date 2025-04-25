@@ -4,8 +4,8 @@ import csv
 import osmnx as ox
 import networkx as nx
 from geopy.distance import great_circle
-from astar import custom_astar_algorithm
-from ant_colony import custom_ant_colony_algorithm
+from .astar import custom_astar_algorithm
+from .ant_colony import custom_ant_colony_algorithm
 
 def load_ukraine_graph(path: str) -> nx.MultiDiGraph:
     """
