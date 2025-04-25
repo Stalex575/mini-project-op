@@ -71,7 +71,7 @@ async def obstacles(request: Request) -> dict:
                 for lat, lon in data['obstacles']
             }
 
-            with open('obstacles_confirmed.csv', 'a', newline='', encoding='utf-8') as f:
+            with open('obstacles_unconfirmed.csv', 'a', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
 
                 for node_id in node_ids:
@@ -79,7 +79,7 @@ async def obstacles(request: Request) -> dict:
 
         obstacles_coords = []
 
-        with open('obstacles_confirmed.csv', encoding='utf-8') as f:
+        with open('obstacles_unconfirmed.csv', encoding='utf-8') as f:
             reader = csv.reader(f)
 
             for row in reader:
@@ -214,4 +214,3 @@ async def delete_obstacle(request: Request):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
-
