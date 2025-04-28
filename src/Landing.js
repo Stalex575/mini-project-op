@@ -65,7 +65,7 @@ export default function Landing() {
         </p>
         <iframe
           className="video"
-          src="https://www.youtube.com/embed/xvFZjo5PgG0"
+          src="https://youtu.be/h_UIqmjGcAM"
           title="Rick Roll (Different link + no ads)"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
