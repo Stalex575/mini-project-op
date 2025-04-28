@@ -65,8 +65,8 @@ export default function Landing() {
         </p>
         <iframe
           className="video"
-          src="https://www.youtube.com/watch?v=h_UIqmjGcAM"
-          title="Rick Roll (Different link + no ads)"
+          src="https://www.youtube.com/embed/h_UIqmjGcAM"
+          title="Exodus tutorial"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin"
@@ -78,7 +78,9 @@ export default function Landing() {
         <p className="section-subtitle">
           If you have questions or suggestions send us an email.
         </p>
-        <button className="action-button">Email us!</button>
+        <a className="action-button" href="mailto:solchanyk.pn@ucu.edu.ua">
+          Email us!
+        </a>
       </section>
       <footer>
         <p>©EXODUS 2025</p>
