@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MapComponent from "./MapComponent";
 import { useMap } from "./MapContext";
-const API_URL = process.env.REACT_APP_API_URL || "${API_URL}";
+const API_URL = "https://contemporary-maureen-ex0dus-c1333172.koyeb.app";
 export default function MapPage() {
   const {
     route,
