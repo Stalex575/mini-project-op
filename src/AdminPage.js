@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = "https://contemporary-maureen-ex0dus-c1333172.koyeb.app";
+const API_URL = "https://mini-project-op.onrender.com";
 
 export default function AdminPanel() {
   const [secret, setSecret] = useState("");
